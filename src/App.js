@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { CardList } from './components/card-list/card-list.component';
+import { SearchBox } from './components/search-box/search-box.component';
 
 class App extends Component {
 
@@ -8,17 +9,21 @@ class App extends Component {
     super();
 
     this.state = {
-    string: "from the constructor hello world",
-    
     co_names: [],
     searchfield: ''
    };
+
+   //this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/users')
     .then(response => response.json())
     .then(users => this.setState( { co_names : users } ));
+  }
+  
+  handleChange = (e) => {
+      this.setState({ searchfield: e.target.value})
   }
   
    render() {
@@ -28,17 +33,17 @@ class App extends Component {
         co_name.name.toLowerCase().includes(searchfield.toLowerCase())
     )
 
-
     return (
     <div className="App">
-      <input type='search' placeholder='Search....' onChange={e => this.setState({ searchfield: e.target.value})}/>
-      {/* <CardList child_co_names={this.state.co_names} >
-      </CardList>  */
-      }
+      <h1>Monsters Rolodex</h1>
+      <SearchBox 
+        placeholder='Search...'
+        handleChange={this.handleChange}
+      />
       <CardList child_co_names= {filtered_cos}>
       </CardList>
     </div>  
-    ) 
+    ) ;
   }
 }
 
